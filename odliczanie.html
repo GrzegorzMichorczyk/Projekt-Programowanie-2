@@ -1,0 +1,70 @@
+	<script>
+	
+	function calculateInterval(dateAsInt)
+	{
+		var today = new Date();
+		var secondsToday = today.getTime() / 1000;
+		
+		var timeRange = Math.floor(dateAsInt - secondsToday);
+		if(timeRange < 0)
+		{
+			return 0;
+		}
+		return timeRange;
+	}
+	
+	function convertDateToSeconds(dateAsString)
+	{
+		var date = new Date(dateAsString);
+		var dateAsInt = date.getTime() / 1000;
+	
+		var interval = calculateInterval(dateAsInt);
+				
+		return dateAsInt;
+	}
+		
+	function intervalToString(timeInterval) {
+		var days = Math.floor(timeInterval / 86400);
+		var hours = Math.floor((timeInterval % 86400) / 3600);
+		var minutes = Math.floor((timeInterval % 1440) / 60);
+		var seconds = Math.floor((timeInterval % 60)); 
+		
+		var text = days + " dni "+ hours + "h "+ minutes + "m " + seconds + "s" ;
+		return text;
+	}
+		
+	function showInterval() {
+		var interval = calculateInterval(this.dateAsInt);
+		if(interval>0)
+		{
+			document.getElementById("koniecZapisow").innerHTML = "Do końca zapisów: " + intervalToString(interval);
+		}
+		else
+		{
+			document.getElementById("koniecZapisow").innerHTML = "Zapisy zakończone"; 
+		}
+		
+	}
+	
+	function TimeCounter(dateAsString) {
+		this.dateAsString=dateAsString;
+		this.dateAsInt=convertDateToSeconds(dateAsString);
+		
+		this.timeInterval=calculateInterval(this.dateAsInt);
+		this.showInterval = showInterval;
+	}
+	
+	//Urodziny
+	function start(time)
+	{
+		var counter = new TimeCounter(time);
+	
+		function showIntervals() {
+		
+			counter.showInterval();
+		}
+		showIntervals();
+		setInterval(showIntervals, 1000);
+	}
+
+</script>
